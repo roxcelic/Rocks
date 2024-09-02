@@ -2,14 +2,19 @@
   "dependencies": {
     "@discordjs/rest": "^2.3.0",
     "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
     "discord-api-types": "^0.37.99",
-    "discord.js": "^14.15.3"
+    "discord.js": "^14.15.3",
+    "git-repo-info": "^2.1.1",
+    "he": "^1.2.0",
+    "minecraft-server-util": "^5.4.4",
+    "node-fetch": "^2.7.0"
   },
   "name": "rocks",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pub": "node deploy-commands.js && node index.js"
   },
   "keywords": [],
   "author": "",
