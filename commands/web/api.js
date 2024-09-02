@@ -12,7 +12,8 @@ module.exports = {
 				.setDescription('Parameters for the API call, separated by periods.')
 				.setRequired(false)),
 	async execute(interaction) {
-		const paramInput = interaction.options.getString('header(s)');
+		// Corrected the option name here
+		const paramInput = interaction.options.getString('param');
 		const params = paramInput ? paramInput.split('.').map(p => p.trim()) : [];
 
 		let apiUrl = 'https://api.roxcelic.love';
@@ -20,10 +21,11 @@ module.exports = {
 		try {
 			const response = await axios.get(apiUrl);
 			let data = response.data;
+
 			const getClosestMatch = (obj, params) => {
 				let current = obj;
 				for (const param of params) {
-					if (current[param] !== undefined) {
+					if (current && typeof current === 'object' && current[param] !== undefined) {
 						current = current[param];
 					} else {
 						return current;
@@ -31,28 +33,21 @@ module.exports = {
 				}
 				return current;
 			};
+
 			const getTopLevelHeaders = (obj) => {
-				return Object.keys(obj).map(key => `${key}`);
-			};
-			const getChildHeaders = (obj, level) => {
-				let current = obj;
-				for (let i = 0; i < level; i++) {
-					if (typeof current === 'object' && !Array.isArray(current)) {
-						current = current[Object.keys(current)[0]];
-					} else {
-						return [];
-					}
+				if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+					return Object.keys(obj).map(key => `${key}`);
 				}
-				return Object.keys(current).map(key => `${key}`);
+				return [];
 			};
+
 			let headers;
 			if (params.length === 0) {
 				headers = getTopLevelHeaders(data);
 			} else {
-				const level = params.length - 1;
 				let current = data;
 				for (const param of params) {
-					if (current[param] !== undefined) {
+					if (current && typeof current === 'object' && current[param] !== undefined) {
 						current = current[param];
 					} else {
 						current = {};
