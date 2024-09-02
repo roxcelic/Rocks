@@ -5,6 +5,11 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies with Pong!'),
 	async execute(interaction) {
-		await interaction.reply('Pong!');
+		const randomChance = Math.floor(Math.random() * 8192) + 1;
+		if (randomChance === 1) {
+			await interaction.reply('aww damit I missed *sparkle*');
+		} else {
+			await interaction.reply('Pong!');
+		}
 	},
 };
